@@ -195,9 +195,9 @@ namespace BaddyMatchMaker.Models
 
                 entity.Property(e => e.SessionId).HasColumnName("sessionId");
 
-                entity.Property(e => e.SignUpTime)
+                entity.Property(e => e.SignInTime)
                     .HasColumnType("datetime")
-                    .HasColumnName("signUpTime");
+                    .HasColumnName("signInTime");
 
                 entity.HasOne(d => d.Player)
                     .WithMany(p => p.SessionPlayers)

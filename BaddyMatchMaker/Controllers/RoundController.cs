@@ -10,7 +10,7 @@ namespace BaddyMatchMaker.Controllers
     [ApiController]
     public class RoundController : ControllerBase
     {
-        private ISessionManagementService sessionManagementService;
+        private readonly ISessionManagementService sessionManagementService;
 
         public RoundController(ISessionManagementService sessionManagementService)
         {
@@ -23,10 +23,10 @@ namespace BaddyMatchMaker.Controllers
             return new OkObjectResult("API Running...");
         }
 
-        [HttpPost("[action]/{sessionId}")]
-        public IActionResult GetNext(SettingDto settingsDto)
+        [HttpPost("[action]/{sessionId}/{numberOfCourts}")]
+        public IActionResult GetNext(int sessionId, int numberOfCourts)
         {
-            return new OkObjectResult(sessionManagementService.CreateNewRound(settingsDto));
+            return new OkObjectResult(sessionManagementService.CreateNewRound(sessionId, numberOfCourts));
         }
 
     }

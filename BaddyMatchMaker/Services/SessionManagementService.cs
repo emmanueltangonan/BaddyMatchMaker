@@ -9,17 +9,37 @@ namespace BaddyMatchMaker.Services
 {
     public class SessionManagementService : ISessionManagementService
     {
-        private IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMatchMakingService matchMakingService;
 
-        public SessionManagementService(IUnitOfWork unitOfWork)
+        public SessionManagementService(IUnitOfWork unitOfWork, IMatchMakingService matchMakingService)
         {
             this.unitOfWork = unitOfWork;
+            this.matchMakingService = matchMakingService;
         }
 
-        public Round CreateNewRound(SettingDto settingsDto)
+        public Round CreateNewRound(int sessionId, int numberOfCourts)
         {
-            var settings = settingsDto.ToModel();
-            return null;
+            var session = unitOfWork.SessionRepository.GetById(sessionId);
+
+            if (session == null)
+            {
+                throw new Exception("Session not found.");
+            }
+
+            if (session.Venue.NumberOfCourts < numberOfCourts)
+            {
+                throw new Exception("Requested number of courts exceeds venue's available courts.");
+            }
+
+            var settings = unitOfWork.SettingsRepository.GetById(session.ClubId);
+
+            if (settings == null)
+            {
+                throw new Exception("Settings not found.");
+            }
+
+            return matchMakingService.CreateMatches(settings, numberOfCourts, session);
         }
 
         public Session CreateSession(SessionDto sessionDto)

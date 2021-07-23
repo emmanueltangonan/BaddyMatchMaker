@@ -10,7 +10,7 @@ namespace BaddyMatchMaker.Controllers
     [ApiController]
     public class SessionController : ControllerBase
     {
-        private ISessionManagementService sessionManagementService;
+        private readonly ISessionManagementService sessionManagementService;
 
         public SessionController(ISessionManagementService sessionManagementService)
         {

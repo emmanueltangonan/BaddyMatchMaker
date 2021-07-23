@@ -11,7 +11,7 @@ namespace BaddyMatchMaker.Dto
 
         public int PlayerId { get; set; }
 
-        public DateTime SignUpTime { get; set; }
+        public DateTime SignInTime { get; set; }
 
         public bool Active { get; set; }
 
@@ -28,7 +28,7 @@ namespace BaddyMatchMaker.Dto
                 SessionPlayerId = model.SessionPlayerId,
                 SessionId = model.SessionId,
                 PlayerId = model.PlayerId,
-                SignUpTime = model.SignUpTime,
+                SignInTime = model.SignInTime,
                 Active = model.Active,
                 Player = PlayerDto.FromModel(model.Player),
                 Session = SessionDto.FromModel(model.Session),
@@ -42,7 +42,7 @@ namespace BaddyMatchMaker.Dto
                 SessionPlayerId = SessionPlayerId,
                 SessionId = SessionId,
                 PlayerId = PlayerId,
-                SignUpTime = SignUpTime,
+                SignInTime = SignInTime,
                 Active = Active,
                 Player = Player?.ToModel(),
                 Session = Session?.ToModel(),

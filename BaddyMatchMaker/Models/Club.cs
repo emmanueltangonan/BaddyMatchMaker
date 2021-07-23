@@ -16,6 +16,8 @@ namespace BaddyMatchMaker.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
+        public virtual Setting Setting { get; set; }
+
         public virtual ICollection<Session> Sessions { get; set; }
     }
 }

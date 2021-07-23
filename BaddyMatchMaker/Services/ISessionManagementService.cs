@@ -5,7 +5,7 @@ namespace BaddyMatchMaker.Services
 {
     public interface ISessionManagementService
     {
-        Round CreateNewRound(SettingDto settingsDto);
+        Round CreateNewRound(int sessionId, int numberOfCourts);
         Session CreateSession(SessionDto sessionDto);
         void EndSession(int sessionId);
         void SwapPlayers(int roundId, int player1Id, int player2Id);

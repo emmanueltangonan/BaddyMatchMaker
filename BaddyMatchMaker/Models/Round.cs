@@ -24,7 +24,7 @@ namespace BaddyMatchMaker.Models
 
         private Match FindPlayerMatch(int playerId)
         {
-            var match = Matches.FirstOrDefault(m => m.PlayerMatches.Select(pm => pm.PlayerId).Contains(playerId));
+            var match = Matches.FirstOrDefault(m => m.GetPlayer(playerId) != null);
             if (match == null)
             {
                 throw new Exception("Player not found.");

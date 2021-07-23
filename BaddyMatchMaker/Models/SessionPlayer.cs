@@ -18,7 +18,7 @@ namespace BaddyMatchMaker.Models
         public int SessionPlayerId { get; set; }
         public int SessionId { get; set; }
         public int PlayerId { get; set; }
-        public DateTime SignUpTime { get; set; }
+        public DateTime SignInTime { get; set; }
         public bool Active { get; set; }
 
         public virtual Player Player { get; set; }
@@ -27,7 +27,7 @@ namespace BaddyMatchMaker.Models
         public void SignIn(DateTime? signInTime = null)
         {
             Active = true;
-            SignUpTime = signInTime ?? DateTime.Now.ToUniversalTime();
+            SignInTime = signInTime ?? DateTime.Now.ToUniversalTime();
         }
 
         public void SignOut()

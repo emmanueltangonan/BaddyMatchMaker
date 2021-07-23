@@ -110,6 +110,9 @@ namespace BaddyMatchMaker.Models
             {
                 entity.ToTable("PlayerMatch");
 
+                entity.HasIndex(e => new { e.MatchId, e.PlayerId }, "IX_PlayerMatch")
+                    .IsUnique();
+
                 entity.Property(e => e.PlayerMatchId).HasColumnName("playerMatchId");
 
                 entity.Property(e => e.MatchId).HasColumnName("matchId");
@@ -190,6 +193,9 @@ namespace BaddyMatchMaker.Models
             modelBuilder.Entity<SessionPlayer>(entity =>
             {
                 entity.ToTable("SessionPlayer");
+
+                entity.HasIndex(e => new { e.SessionId, e.PlayerId }, "IX_SessionPlayer")
+                    .IsUnique();
 
                 entity.Property(e => e.SessionPlayerId).HasColumnName("sessionPlayerId");
 

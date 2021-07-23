@@ -12,11 +12,11 @@ namespace BaddyMatchMaker.Models
             PlayerMatches = new HashSet<PlayerMatch>();
         }
 
-        public int MatchId { get; protected set; }
-        public byte CourtNumber { get; protected set; }
-        public int RoundId { get; protected set; }
+        public int MatchId { get; set; }
+        public byte CourtNumber { get; set; }
+        public int RoundId { get; set; }
 
-        public virtual Round Round { get; protected set; }
-        public virtual ICollection<PlayerMatch> PlayerMatches { get; protected set; }
+        public virtual Round Round { get; set; }
+        public virtual ICollection<PlayerMatch> PlayerMatches { get; set; }
     }
 }

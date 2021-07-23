@@ -13,14 +13,14 @@ namespace BaddyMatchMaker.Models
             PlayerId = playerId;
         }
 
-        public int SessionPlayerId { get; protected set; }
-        public int SessionId { get; protected set; }
-        public int PlayerId { get; protected set; }
-        public DateTime SignUpTime { get; protected set; }
-        public bool Active { get; protected set; }
+        public int SessionPlayerId { get; set; }
+        public int SessionId { get; set; }
+        public int PlayerId { get; set; }
+        public DateTime SignUpTime { get; set; }
+        public bool Active { get; set; }
 
-        public virtual Player Player { get; protected set; }
-        public virtual Session Session { get; protected set; }
+        public virtual Player Player { get; set; }
+        public virtual Session Session { get; set; }
 
         public void SignIn(DateTime? signInTime = null)
         {

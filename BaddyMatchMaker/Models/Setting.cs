@@ -7,7 +7,7 @@ namespace BaddyMatchMaker.Models
 {
     public partial class Setting
     {
-        public short? MatchDuration { get; protected set; }
-        public bool? IgnoreSex { get; protected set; }
+        public int? MatchDuration { get; set; }
+        public bool? IgnoreSex { get; set; }
     }
 }

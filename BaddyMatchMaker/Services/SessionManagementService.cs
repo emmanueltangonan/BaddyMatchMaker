@@ -1,5 +1,6 @@
 ﻿using BaddyMatchMaker.Dto;
 using BaddyMatchMaker.Models;
+using BaddyMatchMaker.Models.Dto;
 using BaddyMatchMaker.Repository;
 using System;
 
@@ -14,7 +15,7 @@ namespace BaddyMatchMaker.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public Round CreateNewRound()
+        public Round CreateNewRound(SettingDto settingsDto)
         {
             throw new System.NotImplementedException();
         }

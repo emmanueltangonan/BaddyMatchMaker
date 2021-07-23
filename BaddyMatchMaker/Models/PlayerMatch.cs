@@ -7,11 +7,11 @@ namespace BaddyMatchMaker.Models
 {
     public partial class PlayerMatch
     {
-        public int PlayerMatchId { get; protected set; }
-        public int MatchId { get; protected set; }
-        public int PlayerId { get; protected set; }
+        public int PlayerMatchId { get; set; }
+        public int MatchId { get; set; }
+        public int PlayerId { get; set; }
 
-        public virtual Match Match { get; protected set; }
-        public virtual Player Player { get; protected set; }
+        public virtual Match Match { get; set; }
+        public virtual Player Player { get; set; }
     }
 }

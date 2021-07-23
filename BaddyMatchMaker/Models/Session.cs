@@ -16,14 +16,14 @@ namespace BaddyMatchMaker.Models
             sessionPlayers = new List<SessionPlayer>();
         }
 
-        public int SessionId { get; protected set; }
-        public int ClubId { get; protected set; }
-        public int VenueId { get; protected set; }
-        public DateTime? StartTime { get; protected set; }
-        public DateTime? EndTime { get; protected set; }
+        public int SessionId { get; set; }
+        public int ClubId { get; set; }
+        public int VenueId { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
-        public Club Club { get; protected set; }
-        public Venue Venue { get; protected set; }
+        public Club Club { get; set; }
+        public Venue Venue { get; set; }
         public IReadOnlyCollection<Round> Rounds => rounds.AsReadOnly();
         public IReadOnlyCollection<SessionPlayer> SessionPlayers => sessionPlayers.AsReadOnly();
 

@@ -13,14 +13,14 @@ namespace BaddyMatchMaker.Models
             SessionPlayers = new HashSet<SessionPlayer>();
         }
 
-        public int PlayerId { get; protected set; }
-        public string Name { get; protected set; }
-        public string Sex { get; protected set; }
-        public byte Grade { get; protected set; }
-        public string Phone { get; protected set; }
-        public string Email { get; protected set; }
+        public int PlayerId { get; set; }
+        public string Name { get; set; }
+        public string Sex { get; set; }
+        public byte Grade { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
 
-        public virtual ICollection<PlayerMatch> PlayerMatches { get; protected set; }
-        public virtual ICollection<SessionPlayer> SessionPlayers { get; protected set; }
+        public virtual ICollection<PlayerMatch> PlayerMatches { get; set; }
+        public virtual ICollection<SessionPlayer> SessionPlayers { get; set; }
     }
 }

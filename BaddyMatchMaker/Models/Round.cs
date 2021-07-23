@@ -12,13 +12,13 @@ namespace BaddyMatchMaker.Models
             Matches = new HashSet<Match>();
         }
 
-        public int RoundId { get; protected set; }
-        public int SessionId { get; protected set; }
-        public DateTime StartTime { get; protected set; }
-        public DateTime EndTime { get; protected set; }
-        public int CourtsAvailable { get; protected set; }
+        public int RoundId { get; set; }
+        public int SessionId { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int CourtsAvailable { get; set; }
 
-        public virtual Session Session { get; protected set; }
-        public virtual ICollection<Match> Matches { get; protected set; }
+        public virtual Session Session { get; set; }
+        public virtual ICollection<Match> Matches { get; set; }
     }
 }

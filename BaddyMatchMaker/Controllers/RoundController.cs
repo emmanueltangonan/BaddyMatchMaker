@@ -1,4 +1,5 @@
-﻿using BaddyMatchMaker.Models;
+﻿using BaddyMatchMaker.Dto;
+using BaddyMatchMaker.Models;
 using BaddyMatchMaker.Repository;
 using BaddyMatchMaker.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,10 +23,10 @@ namespace BaddyMatchMaker.Controllers
             return new OkObjectResult("API Running...");
         }
 
-        [HttpGet("[action]/{sessionId}")]
-        public IActionResult GetNext(int sessionId)
+        [HttpPost("[action]/{sessionId}")]
+        public IActionResult GetNext(SettingDto settingsDto)
         {
-            return new OkObjectResult(sessionManagementService.CreateNewRound());
+            return new OkObjectResult(sessionManagementService.CreateNewRound(settingsDto));
         }
 
     }

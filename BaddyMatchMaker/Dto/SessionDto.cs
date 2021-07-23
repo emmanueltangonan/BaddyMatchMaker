@@ -17,6 +17,8 @@ namespace BaddyMatchMaker.Dto
 
         public DateTime? EndTime { get; set; }
 
+        public bool Active { get; set; }
+
         public ClubDto Club { get; set; }
 
         public VenueDto Venue { get; set; }
@@ -36,6 +38,7 @@ namespace BaddyMatchMaker.Dto
                 VenueId = model.VenueId,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
+                Active = model.Active,
                 Club = ClubDto.FromModel(model.Club),
                 Venue = VenueDto.FromModel(model.Venue),
                 //Rounds = model.Rounds?.Select(r => RoundDto.FromModel(r)).ToList(), 
@@ -52,6 +55,7 @@ namespace BaddyMatchMaker.Dto
                 VenueId = VenueId,
                 StartTime = StartTime,
                 EndTime = EndTime,
+                Active = Active,
                 Club = Club?.ToModel(),
                 Venue = Venue?.ToModel(),
                 //Rounds = Rounds?.Select(r => r.ToModel()).ToList(), 

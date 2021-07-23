@@ -145,6 +145,8 @@ namespace BaddyMatchMaker.Models
                     .HasColumnType("datetime")
                     .HasColumnName("startTime");
 
+                entity.Property(e => e.CourtsAvailable).HasColumnName("courtsAvailable");
+
                 entity.HasOne(d => d.Session)
                     .WithMany(p => p.Rounds)
                     .HasForeignKey(d => d.SessionId)
@@ -169,6 +171,8 @@ namespace BaddyMatchMaker.Models
                     .HasColumnName("startTime");
 
                 entity.Property(e => e.VenueId).HasColumnName("venueId");
+
+                entity.Property(e => e.Active).HasColumnName("active");
 
                 entity.HasOne(d => d.Club)
                     .WithMany(p => p.Sessions)

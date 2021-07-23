@@ -7,6 +7,8 @@ namespace BaddyMatchMaker.Models
 {
     public partial class SessionPlayer
     {
+        public SessionPlayer() { }
+
         public SessionPlayer(int sessionId, int playerId)
         {
             SessionId = sessionId;
@@ -26,6 +28,11 @@ namespace BaddyMatchMaker.Models
         {
             Active = true;
             SignUpTime = signInTime ?? DateTime.Now.ToUniversalTime();
+        }
+
+        public void SignOut()
+        {
+            Active = false;
         }
     }
 }

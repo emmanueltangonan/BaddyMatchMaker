@@ -21,6 +21,7 @@ namespace BaddyMatchMaker.Models
         public int VenueId { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+        public bool Active { get; set; }
 
         public Club Club { get; set; }
         public Venue Venue { get; set; }

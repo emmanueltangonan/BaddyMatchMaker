@@ -7,10 +7,10 @@ namespace BaddyMatchMaker.Services
     {
         Round CreateNewRound(SettingDto settingsDto);
         Session CreateSession(SessionDto sessionDto);
-        void EndSession();
-        void SwapPlayers();
-        SessionPlayer SignInPlayer(SessionPlayerDto sessionPlayerDto);
-        void SignAllPlayersIn(SessionDto sessionDto);
-        void SignOutPlayer();
+        void EndSession(int sessionId);
+        void SwapPlayers(int roundId, int player1Id, int player2Id);
+        SessionPlayer SignInPlayer(int playerId, int sessionId);
+        void SignAllPlayersIn(int sessionId);
+        void SignOutPlayer(int playerId, int sessionId);
     }
 }

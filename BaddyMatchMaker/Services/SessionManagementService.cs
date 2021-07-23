@@ -1,8 +1,9 @@
 ﻿using BaddyMatchMaker.Dto;
 using BaddyMatchMaker.Models;
-using BaddyMatchMaker.Models.Dto;
 using BaddyMatchMaker.Repository;
 using System;
+using System.Linq;
+
 
 namespace BaddyMatchMaker.Services
 {
@@ -22,21 +23,33 @@ namespace BaddyMatchMaker.Services
 
         public Session CreateSession(SessionDto sessionDto)
         {
-            var  session = sessionDto.ToModel();
+            var session = unitOfWork.SessionRepository.GetById(sessionDto.SessionId);
+
+            if (session != null)
+            {
+                throw new Exception("Session with same ID already exists.");
+            }
+
+            session = sessionDto.ToModel();
             unitOfWork.SessionRepository.Insert(session);
             unitOfWork.Commit();
             return session;
         }
 
-        public void EndSession()
+        public void EndSession(int sessionId)
         {
-            throw new System.NotImplementedException();
+            var session = unitOfWork.SessionRepository.GetById(sessionId);
+
+            if (session == null)
+            {
+                throw new Exception("Session not found.");
+            }
         }
 
-        public void SignAllPlayersIn(SessionDto sessionDto)
+        public void SignAllPlayersIn(int sessionId)
         {
             var allPlayers = unitOfWork.PlayerRepository.Get();
-            var session = unitOfWork.SessionRepository.GetById(sessionDto.SessionId);
+            var session = unitOfWork.SessionRepository.GetById(sessionId);
 
             if (session == null)
             {
@@ -46,7 +59,7 @@ namespace BaddyMatchMaker.Services
             var signUpTimeDelay = 0;
             foreach (var player in allPlayers)
             {
-                var sessionPlayer = new SessionPlayer(sessionDto.SessionId, player.PlayerId);
+                var sessionPlayer = new SessionPlayer(sessionId, player.PlayerId);
                 sessionPlayer.SignIn(DateTime.Now.AddSeconds(signUpTimeDelay += 5).ToUniversalTime());
                 session.SignInPlayer(sessionPlayer);
             }
@@ -54,9 +67,18 @@ namespace BaddyMatchMaker.Services
             unitOfWork.Commit();
         }
 
-        public SessionPlayer SignInPlayer(SessionPlayerDto sessionPlayerDto)
+        public SessionPlayer SignInPlayer(int playerId, int sessionId)
         {
-            var sessionPlayer = sessionPlayerDto.ToModel();
+            var sessionPlayer = unitOfWork.SessionPlayerRepository
+                .Get(sp => sp.PlayerId == playerId && sp.SessionId == sessionId)
+                .FirstOrDefault();
+
+            if (sessionPlayer != null)
+            {
+                throw new Exception("Player already signed in.");
+            }
+
+            sessionPlayer = new SessionPlayer(sessionId, playerId);
             sessionPlayer.SignIn();
 
             var session = unitOfWork.SessionRepository.GetById(sessionPlayer.SessionId);
@@ -66,19 +88,42 @@ namespace BaddyMatchMaker.Services
                 throw new Exception("Session not found.");
             }
 
+            if (!session.Active)
+            {
+                throw new Exception("Session is inactive.");
+            }
+
             session.SignInPlayer(sessionPlayer);
             unitOfWork.Commit();
             return sessionPlayer;
         }
 
-        public void SignOutPlayer()
+        public void SignOutPlayer(int playerId, int sessionId)
         {
-            throw new System.NotImplementedException();
+            var sessionPlayer = unitOfWork.SessionPlayerRepository
+                .Get(sp => sp.PlayerId == playerId && sp.SessionId == sessionId)
+                .FirstOrDefault();
+
+            if (sessionPlayer == null)
+            {
+                throw new Exception("Player not signed in.");
+            }
+
+            sessionPlayer.SignOut();
+            unitOfWork.Commit();
         }
 
-        public void SwapPlayers()
+        public void SwapPlayers(int roundId, int player1Id, int player2Id)
         {
-            throw new System.NotImplementedException();
+            Round round = unitOfWork.RoundRepository.GetById(roundId);
+
+            if (round == null)
+            {
+                throw new Exception("Round not found.");
+            }
+
+            round.SwapPlayers(player1Id, player2Id);
+            unitOfWork.Commit();
         }
     }
 }

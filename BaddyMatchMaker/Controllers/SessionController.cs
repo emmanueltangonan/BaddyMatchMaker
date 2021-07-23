@@ -20,6 +20,11 @@ namespace BaddyMatchMaker.Controllers
         [HttpPost("[action]")]
         public IActionResult Create([FromBody] SessionDto sessionDto)
         {
+            if (sessionDto.ClubId <= 0 || sessionDto.VenueId <= 0)
+            {
+                return new BadRequestResult();
+            }
+
             var session = sessionManagementService.CreateSession(sessionDto);
             return new OkObjectResult(SessionDto.FromModel(session));
         }
@@ -27,14 +32,24 @@ namespace BaddyMatchMaker.Controllers
         [HttpPost("[action]")]
         public IActionResult SignInPlayer([FromBody] SessionPlayerDto sessionPlayerDto)
         {
-            var sessionPlayer = sessionManagementService.SignInPlayer(sessionPlayerDto);
+            if (sessionPlayerDto.PlayerId <= 0 || sessionPlayerDto.SessionId <= 0)
+            {
+                return new BadRequestResult();
+            }
+
+            var sessionPlayer = sessionManagementService.SignInPlayer(sessionPlayerDto.PlayerId, sessionPlayerDto.SessionId);
             return new OkObjectResult(SessionPlayerDto.FromModel(sessionPlayer));
         }
 
         [HttpPost("[action]")]
         public IActionResult SignAllPlayersIn([FromBody] SessionDto sessionDto)
         {
-            sessionManagementService.SignAllPlayersIn(sessionDto);
+            if (sessionDto.SessionId <= 0)
+            {
+                return new BadRequestResult();
+            }
+
+            sessionManagementService.SignAllPlayersIn(sessionDto.SessionId);
             return new OkResult();
         }
     }

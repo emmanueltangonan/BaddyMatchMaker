@@ -5,9 +5,15 @@ namespace BaddyMatchMaker.Dto
 {
     public class SettingDto
     {
-        public int? MatchDuration { get; set; }
+        public int ClubId { get; set; }
+
+        public short? MatchDuration { get; set; }
 
         public bool? IgnoreSex { get; set; }
+
+        public bool? SinglesMode { get; set; }
+
+        public bool? PrioritizeMixed { get; set; }
 
         public static SettingDto FromModel(Setting model)
         {
@@ -18,8 +24,11 @@ namespace BaddyMatchMaker.Dto
 
             return new SettingDto()
             {
+                ClubId = model.ClubId,
                 MatchDuration = model.MatchDuration, 
-                IgnoreSex = model.IgnoreSex, 
+                IgnoreSex = model.IgnoreSex,
+                SinglesMode = model.SinglesMode,
+                PrioritizeMixed = model.PrioritizeMixed
             }; 
         }
 
@@ -27,8 +36,11 @@ namespace BaddyMatchMaker.Dto
         {
             return new Setting()
             {
+                ClubId = ClubId,
                 MatchDuration = MatchDuration, 
-                IgnoreSex = IgnoreSex, 
+                IgnoreSex = IgnoreSex,
+                SinglesMode = SinglesMode,
+                PrioritizeMixed = PrioritizeMixed
             }; 
         }
     }

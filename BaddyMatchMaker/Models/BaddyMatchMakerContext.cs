@@ -17,16 +17,6 @@ namespace BaddyMatchMaker.Models
         {
         }
 
-        //public virtual DbSet<Club> Clubs { get; set; }
-        //public virtual DbSet<Match> Matches { get; set; }
-        //public virtual DbSet<Player> Players { get; set; }
-        //public virtual DbSet<PlayerMatch> PlayerMatches { get; set; }
-        //public virtual DbSet<Round> Rounds { get; set; }
-        //public virtual DbSet<Session> Sessions { get; set; }
-        //public virtual DbSet<SessionPlayer> SessionPlayers { get; set; }
-        //public virtual DbSet<Setting> Settings { get; set; }
-        //public virtual DbSet<Venue> Venues { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -224,11 +214,25 @@ namespace BaddyMatchMaker.Models
 
             modelBuilder.Entity<Setting>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.ClubId);
+
+                entity.Property(e => e.ClubId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("clubId");
 
                 entity.Property(e => e.IgnoreSex).HasColumnName("ignoreSex");
 
                 entity.Property(e => e.MatchDuration).HasColumnName("matchDuration");
+
+                entity.Property(e => e.PrioritizeMixed).HasColumnName("prioritizeMixed");
+
+                entity.Property(e => e.SinglesMode).HasColumnName("singlesMode");
+
+                entity.HasOne(d => d.Club)
+                    .WithOne(p => p.Setting)
+                    .HasForeignKey<Setting>(d => d.ClubId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Settings_Club");
             });
 
             modelBuilder.Entity<Venue>(entity =>

@@ -18,7 +18,8 @@ namespace BaddyMatchMaker.Services
 
         public Round CreateNewRound(SettingDto settingsDto)
         {
-            throw new System.NotImplementedException();
+            var settings = settingsDto.ToModel();
+            return null;
         }
 
         public Session CreateSession(SessionDto sessionDto)

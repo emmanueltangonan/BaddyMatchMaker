@@ -9,7 +9,7 @@ namespace BaddyMatchMaker.Dto
     {
         public int MatchId { get; set; }
 
-        public byte CourtNumber { get; set; }
+        public int CourtNumber { get; set; }
 
         public int RoundId { get; set; }
 

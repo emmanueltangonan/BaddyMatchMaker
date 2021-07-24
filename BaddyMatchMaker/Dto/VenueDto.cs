@@ -13,7 +13,7 @@ namespace BaddyMatchMaker.Dto
 
         public string Address { get; set; }
 
-        public byte NumberOfCourts { get; set; }
+        public int NumberOfCourts { get; set; }
 
         public ICollection<SessionDto> Sessions { get; set; }
 

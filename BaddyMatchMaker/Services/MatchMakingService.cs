@@ -2,10 +2,8 @@
 using BaddyMatchMaker.Repository;
 using BaddyMatchMaker.Strategies.MatchGrouping;
 using BaddyMatchMaker.Strategies.PlayerPoolSelection;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using static BaddyMatchMaker.Helpers.Constants;
 
 namespace BaddyMatchMaker.Services
 {
@@ -27,19 +25,26 @@ namespace BaddyMatchMaker.Services
 
         public Round CreateMatches(Setting settings, int numberOfCourts, Session session)
         {
-            var playerPoolSelectionStrategy = playerPoolSelectionStrategyFactory.Create(settings);
-            var matchGroupingStrategy = matchGroupingStrategyFactory.Create(settings);
-
-            var availablePlayer = unitOfWork.SessionPlayerRepository
+            // get all players ordered by number of games played and sign in time
+            var availablePlayers = unitOfWork.SessionPlayerRepository
                 .Get(p => p.Active)
                 .OrderBy(p => p.Player.PlayerMatches.Count)
-                .OrderBy(p => p.SignUpTime);
+                .OrderBy(p => p.SignInTime);
 
-            return null;
+            var numberOfPlayersRequired = settings.SinglesMode
+                ? PlayerPerMatch.Singles * numberOfCourts
+                : PlayerPerMatch.Doubles * numberOfCourts;
+
+            var playerPoolSelectionStrategy = playerPoolSelectionStrategyFactory.Create(settings);
+            var playerPool = playerPoolSelectionStrategy.GetPlayerPool(availablePlayers, numberOfPlayersRequired);
+
+            var matchGroupingStrategy = matchGroupingStrategyFactory.Create(settings);
+            var matches = matchGroupingStrategy.GroupPlayers(playerPool).ToList();
+
+            var round = new Round(session, matches, numberOfCourts);
+            return round;
         }
 
     }
-
-
 
 }

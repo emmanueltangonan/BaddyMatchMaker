@@ -15,7 +15,7 @@ namespace BaddyMatchMaker.Models
         public int VenueId { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
-        public byte NumberOfCourts { get; set; }
+        public int NumberOfCourts { get; set; }
 
         public virtual ICollection<Session> Sessions { get; set; }
     }

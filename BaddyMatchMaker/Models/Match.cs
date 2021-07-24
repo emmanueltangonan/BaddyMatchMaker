@@ -14,7 +14,7 @@ namespace BaddyMatchMaker.Models
         }
 
         public int MatchId { get; set; }
-        public byte CourtNumber { get; set; }
+        public int CourtNumber { get; set; }
         public int RoundId { get; set; }
 
         public virtual Round Round { get; set; }

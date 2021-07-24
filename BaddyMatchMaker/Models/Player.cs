@@ -16,7 +16,7 @@ namespace BaddyMatchMaker.Models
         public int PlayerId { get; set; }
         public string Name { get; set; }
         public string Sex { get; set; }
-        public byte Grade { get; set; }
+        public int Grade { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
 

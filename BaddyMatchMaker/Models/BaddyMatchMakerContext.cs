@@ -214,6 +214,11 @@ namespace BaddyMatchMaker.Models
 
             modelBuilder.Entity<Setting>(entity =>
             {
+                entity.HasKey(e => e.ClubId)
+                    .HasName("PK_Settings");
+
+                entity.ToTable("Setting");
+
                 entity.HasKey(e => e.ClubId);
 
                 entity.Property(e => e.ClubId)

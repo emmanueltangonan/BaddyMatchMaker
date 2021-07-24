@@ -7,7 +7,11 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
     {
         public IPlayerPoolSelectionStrategy Create(Setting settings)
         {
-            throw new NotImplementedException();
+            if (settings.IgnoreSex)
+            {
+
+            }
+            return null;
         }
     }
 

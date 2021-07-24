@@ -1,6 +1,8 @@
 using BaddyMatchMaker.Models;
 using BaddyMatchMaker.Repository;
 using BaddyMatchMaker.Services;
+using BaddyMatchMaker.Strategies.MatchGrouping;
+using BaddyMatchMaker.Strategies.PlayerPoolSelection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +33,8 @@ namespace BaddyMatchMaker
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISessionManagementService, SessionManagementService>();
             services.AddScoped<IMatchMakingService, MatchMakingService>();
+            services.AddScoped<IMatchGroupingStrategyFactory, MatchGroupingStrategyFactory>();
+            services.AddScoped<IPlayerPoolSelectionStrategyFactory, PlayerPoolSelectionStrategyFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

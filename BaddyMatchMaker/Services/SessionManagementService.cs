@@ -20,7 +20,9 @@ namespace BaddyMatchMaker.Services
 
         public Round CreateNewRound(int sessionId, int numberOfCourts)
         {
-            var session = unitOfWork.SessionRepository.GetById(sessionId);
+            var session = unitOfWork.SessionRepository
+                .Get(s => s.SessionId == sessionId, includeProperties: nameof(Session.Venue))
+                .FirstOrDefault();
 
             if (session == null)
             {
@@ -39,7 +41,12 @@ namespace BaddyMatchMaker.Services
                 throw new Exception("Settings not found.");
             }
 
-            return matchMakingService.CreateMatches(settings, numberOfCourts, session);
+            var round = unitOfWork.RoundRepository
+                .Get(r => r.RoundId == 1, includeProperties: nameof(Round.Matches))
+                .FirstOrDefault();
+
+            return round;
+            //return matchMakingService.CreateMatches(settings, numberOfCourts, session);
         }
 
         public Session CreateSession(SessionDto sessionDto)

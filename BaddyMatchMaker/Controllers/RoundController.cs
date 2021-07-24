@@ -20,6 +20,7 @@ namespace BaddyMatchMaker.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            var round = sessionManagementService.CreateNewRound(2, 6);
             return new OkObjectResult("API Running...");
         }
 

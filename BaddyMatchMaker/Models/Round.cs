@@ -6,21 +6,27 @@ using System.Linq;
 
 namespace BaddyMatchMaker.Models
 {
-    public partial class Round
+    public partial class Round 
     {
-        public Round()
+        private readonly List<Match> matches;
+
+        public Round() { }
+
+        public Round(Session session, List<Match> matches, int numberOfCourts)
         {
-            Matches = new HashSet<Match>();
+            this.matches = matches;
+            Session = session;
+            CourtsAvailable = numberOfCourts;
         }
 
         public int RoundId { get; set; }
         public int SessionId { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public int CourtsAvailable { get; set; }
 
         public virtual Session Session { get; set; }
-        public virtual ICollection<Match> Matches { get; set; }
+        public IReadOnlyCollection<Match> Matches => matches.AsReadOnly();
 
         private Match FindPlayerMatch(int playerId)
         {

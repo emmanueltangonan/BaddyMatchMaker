@@ -11,9 +11,9 @@ namespace BaddyMatchMaker.Dto
 
         public int SessionId { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         public int CourtsAvailable { get; set; }
 
@@ -48,7 +48,7 @@ namespace BaddyMatchMaker.Dto
                 EndTime = EndTime,
                 CourtsAvailable = CourtsAvailable,
                 Session = Session?.ToModel(),
-                Matches = Matches?.Select(m => m.ToModel()).ToList(),
+                //Matches = Matches?.Select(m => m.ToModel()).ToList(),
             };
         }
     }

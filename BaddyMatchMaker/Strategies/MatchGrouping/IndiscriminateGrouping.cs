@@ -17,9 +17,7 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
             this.roundSettings = roundSettings;
         }
 
-        private int PlayersNeededPerMatch => roundSettings.SinglesMode
-            ? PlayerPerMatch.Singles
-            : PlayerPerMatch.Doubles;
+        private int PlayersNeededPerMatch => roundSettings.PlayersNeededPerMatch;
 
         public IEnumerable<Match> GroupPlayers(ICollection<SessionPlayer> playerPool)
         {

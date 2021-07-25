@@ -24,26 +24,90 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
         {
             this.roundSettings = roundSettings;
         }
+        private int RequiredPlayersCount => roundSettings.RequiredPlayersCount;
+
+        private int PlayersNeededPerMatch => roundSettings.PlayersNeededPerMatch;
+
+        private bool HasEvenMaleAndFemaleCount(IEnumerable<SessionPlayer> playerPool) => playerPool.Count(p => p.Player.Sex == PlayerSex.Male) % 2 == 0;
+
+        private bool IsMultiple(int count) => count % roundSettings.PlayersNeededPerMatch == 0;
 
         public IEnumerable<SessionPlayer> GetPlayerPool(IOrderedEnumerable<SessionPlayer> availablePlayers)
         {
-            var playerPool = availablePlayers.Take(roundSettings.RequiredPlayersCount);
+            var playerPool = availablePlayers.Take(RequiredPlayersCount).ToList();
+            var reserve = availablePlayers.Skip(RequiredPlayersCount).ToList();
 
-            if (playerPool.Count(p => p.Player.Sex == PlayerSex.Male) % 2 == 0)
-            // if male count is even, then female count is even
+            if (IsMultiple(playerPool.Count) && HasEvenMaleAndFemaleCount(playerPool))
             {
                 return playerPool;
             }
 
-            return GetPlayerPoolWithLeastDisruption(availablePlayers);
+            if (!reserve.Any())
+            {
+                int excess = 0;
+                if (playerPool.Count % PlayersNeededPerMatch != 0)
+                {
+                    // if odd
+                    excess = playerPool.Count % PlayersNeededPerMatch;
+                }
+                else
+                {
+                    // even
+                    excess = PlayersNeededPerMatch;
+                }
+
+                var adjustedPlayerPoolCount = playerPool.Count - excess;
+                var adjustedPlayerPool = playerPool.Take(adjustedPlayerPoolCount).ToList();
+
+                if (IsMultiple(adjustedPlayerPoolCount) && HasEvenMaleAndFemaleCount(adjustedPlayerPool))
+                {
+                    return adjustedPlayerPool;
+                }
+
+                return GetPlayerPoolWithLeastDisruption(adjustedPlayerPool, playerPool.Skip(adjustedPlayerPoolCount).ToList());
+            }
+
+            return GetPlayerPoolWithLeastDisruption(playerPool, reserve);
         }
 
-        private IEnumerable<SessionPlayer> GetPlayerPoolWithLeastDisruption(IOrderedEnumerable<SessionPlayer> availablePlayers)
+        private IEnumerable<SessionPlayer> GetPlayerPoolWithLeastDisruption(List<SessionPlayer> playerPool, List<SessionPlayer> reserve)
         {
-            var requiredPlayersCount = roundSettings.RequiredPlayersCount;
-            var lastItem = availablePlayers.Last();
+            if (!reserve.Any())
+            {
+                throw new Exception("Expected reserve to be not empty.");
+            }
 
+            var requiredPlayersCount = playerPool.Count;
+            var lastPlayer = playerPool.Last();
 
+            // MMFFMMMM|MMMF
+
+            // find the nearest opposite sex player from reserve
+            var nearestReserveOppositeSexIndex = reserve.FindIndex(p => p.Player.Sex != lastPlayer.Player.Sex);
+            var nearestReserveDistance = nearestReserveOppositeSexIndex + 1;
+
+            if (nearestReserveOppositeSexIndex != -1 && nearestReserveDistance <= 2)
+            {
+                // nearestReserveDistance 2 or less is best case scenario, no longer need to compare
+                playerPool[requiredPlayersCount - 1] = reserve[nearestReserveOppositeSexIndex];
+                return playerPool;
+            }
+
+            // find the opposite sex player closest to the end of the pool
+            var nearestPlayerPoolOppositeSexIndex = playerPool.FindLastIndex(p => p.Player.Sex != lastPlayer.Player.Sex);
+            var nearestPlayerPoolDistance = requiredPlayersCount - (nearestPlayerPoolOppositeSexIndex + 1);
+
+            if (nearestReserveOppositeSexIndex != -1 && nearestReserveDistance <= nearestPlayerPoolDistance)
+            {
+                playerPool[requiredPlayersCount - 1] = reserve[nearestReserveOppositeSexIndex];
+                return playerPool;
+            }
+            else
+            {
+                playerPool[nearestPlayerPoolOppositeSexIndex] = reserve[0];
+            }
+
+            return playerPool;
         }
     }
 }

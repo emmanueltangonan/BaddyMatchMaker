@@ -14,19 +14,23 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
             this.roundSettings = roundSettings;
         }
 
+        private int PlayersNeededPerMatch => roundSettings.PlayersNeededPerMatch;
+
+        private int RequiredPlayersCount => roundSettings.RequiredPlayersCount;
+
         public IEnumerable<SessionPlayer> GetPlayerPool(IOrderedEnumerable<SessionPlayer> availablePlayers)
         {
-            var requiredPlayersCount = roundSettings.RequiredPlayersCount;
-            var playerPool = availablePlayers.Take(requiredPlayersCount).ToList();
+            var playerPool = availablePlayers.Take(RequiredPlayersCount).ToList();
 
-            if (playerPool.Count < requiredPlayersCount)
+            if (playerPool.Count < RequiredPlayersCount)
             {
-                if (playerPool.Count % 2 == 0) 
+                var excessPlayer = playerPool.Count % PlayersNeededPerMatch;
+                if (excessPlayer == 0) 
                 {
                     return playerPool;
                 }
 
-                return playerPool.Take(playerPool.Count - 1);
+                return playerPool.Take(playerPool.Count - excessPlayer);
             }
 
             return playerPool;

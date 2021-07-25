@@ -23,8 +23,10 @@ namespace BaddyMatchMaker.Helpers
 
         public int RoundNumber { get; }
 
-        public int RequiredPlayersCount => SinglesMode
-            ? PlayerPerMatch.Singles * availableCourts.Count
-            : PlayerPerMatch.Doubles * availableCourts.Count;
+        public int PlayersNeededPerMatch => SinglesMode
+            ? PlayerPerMatch.Singles
+            : PlayerPerMatch.Doubles;
+
+        public int RequiredPlayersCount => PlayersNeededPerMatch * availableCourts.Count;
     }
 }

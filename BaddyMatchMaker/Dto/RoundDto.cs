@@ -11,6 +11,8 @@ namespace BaddyMatchMaker.Dto
 
         public int SessionId { get; set; }
 
+        public int RoundNumber { get; set; }
+
         public DateTime? StartTime { get; set; }
 
         public DateTime? EndTime { get; set; }
@@ -30,6 +32,7 @@ namespace BaddyMatchMaker.Dto
             {
                 RoundId = model.RoundId,
                 SessionId = model.SessionId,
+                RoundNumber = model.RoundNumber,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
                 CourtsAvailable = model.CourtsAvailable,
@@ -44,6 +47,7 @@ namespace BaddyMatchMaker.Dto
             {
                 RoundId = RoundId,
                 SessionId = SessionId,
+                RoundNumber = RoundNumber,
                 StartTime = StartTime,
                 EndTime = EndTime,
                 CourtsAvailable = CourtsAvailable,

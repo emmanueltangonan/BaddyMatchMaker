@@ -132,6 +132,8 @@ namespace BaddyMatchMaker.Models
                     .HasColumnType("datetime")
                     .HasColumnName("endTime");
 
+                entity.Property(e => e.RoundNumber).HasColumnName("roundNumber");
+
                 entity.Property(e => e.SessionId).HasColumnName("sessionId");
 
                 entity.Property(e => e.StartTime)

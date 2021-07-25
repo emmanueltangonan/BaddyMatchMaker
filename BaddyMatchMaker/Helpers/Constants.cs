@@ -11,6 +11,12 @@ namespace BaddyMatchMaker.Helpers
         {
             public static int Singles = 2;
             public static int Doubles = 4;
-        }       
+        }
+
+        public static class PlayerSex
+        {
+            public static string Male = "M";
+            public static string Female = "F";
+        }
     }
 }

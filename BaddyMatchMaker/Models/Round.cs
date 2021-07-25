@@ -12,15 +12,17 @@ namespace BaddyMatchMaker.Models
 
         public Round() { }
 
-        public Round(Session session, List<Match> matches, int numberOfCourts)
+        public Round(Session session, List<Match> matches, int numberOfCourts, int roundNumber)
         {
             this.matches = matches;
             Session = session;
             CourtsAvailable = numberOfCourts;
+            RoundNumber = roundNumber;
         }
 
         public int RoundId { get; set; }
         public int SessionId { get; set; }
+        public int RoundNumber { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public int CourtsAvailable { get; set; }

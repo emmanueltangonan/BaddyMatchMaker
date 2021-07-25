@@ -8,6 +8,6 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
 {
     public interface IMatchGroupingStrategy
     {
-        IEnumerable<Match> GroupPlayers(IEnumerable<SessionPlayer> players);
+        IEnumerable<Match> GroupPlayers(ICollection<SessionPlayer> playerPool);
     }
 }

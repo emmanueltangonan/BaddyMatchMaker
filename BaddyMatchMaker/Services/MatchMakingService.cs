@@ -1,7 +1,9 @@
-﻿using BaddyMatchMaker.Models;
+﻿using BaddyMatchMaker.Helpers;
+using BaddyMatchMaker.Models;
 using BaddyMatchMaker.Repository;
-using BaddyMatchMaker.Strategies.MatchGrouping;
-using BaddyMatchMaker.Strategies.PlayerPoolSelection;
+using BaddyMatchMaker.Strategies.Factory;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using static BaddyMatchMaker.Helpers.Constants;
 
@@ -23,7 +25,7 @@ namespace BaddyMatchMaker.Services
             this.matchGroupingStrategyFactory = matchGroupingStrategyFactory;
         }
 
-        public Round CreateMatches(Setting settings, int numberOfCourts, Session session)
+        public IEnumerable<Match> CreateMatches(RoundSettings roundSettings)
         {
             // get all players ordered by number of games played and sign in time
             var availablePlayers = unitOfWork.SessionPlayerRepository
@@ -31,18 +33,19 @@ namespace BaddyMatchMaker.Services
                 .OrderBy(p => p.Player.PlayerMatches.Count)
                 .OrderBy(p => p.SignInTime);
 
-            var numberOfPlayersRequired = settings.SinglesMode
-                ? PlayerPerMatch.Singles * numberOfCourts
-                : PlayerPerMatch.Doubles * numberOfCourts;
+            // pool selection
+            var playerPoolSelectionStrategy = playerPoolSelectionStrategyFactory.Create(roundSettings);
+            var playerPool = playerPoolSelectionStrategy.GetPlayerPool(availablePlayers).ToList();
 
-            var playerPoolSelectionStrategy = playerPoolSelectionStrategyFactory.Create(settings);
-            var playerPool = playerPoolSelectionStrategy.GetPlayerPool(availablePlayers, numberOfPlayersRequired);
+            if (!playerPool.Any())
+            {
+                throw new Exception("Not enough players to create a match.");
+            }
 
-            var matchGroupingStrategy = matchGroupingStrategyFactory.Create(settings);
-            var matches = matchGroupingStrategy.GroupPlayers(playerPool).ToList();
-
-            var round = new Round(session, matches, numberOfCourts);
-            return round;
+            // court grouping and assignment
+            var matchGroupingStrategy = matchGroupingStrategyFactory.Create(roundSettings);
+            playerPool.Shuffle<SessionPlayer>();
+            return matchGroupingStrategy.GroupPlayers(playerPool);
         }
 
     }

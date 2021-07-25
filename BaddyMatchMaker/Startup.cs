@@ -1,8 +1,7 @@
 using BaddyMatchMaker.Models;
 using BaddyMatchMaker.Repository;
 using BaddyMatchMaker.Services;
-using BaddyMatchMaker.Strategies.MatchGrouping;
-using BaddyMatchMaker.Strategies.PlayerPoolSelection;
+using BaddyMatchMaker.Strategies.Factory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

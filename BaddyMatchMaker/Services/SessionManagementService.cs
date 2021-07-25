@@ -1,9 +1,10 @@
 ﻿using BaddyMatchMaker.Dto;
+using BaddyMatchMaker.Dto.RequestDto;
+using BaddyMatchMaker.Helpers;
 using BaddyMatchMaker.Models;
 using BaddyMatchMaker.Repository;
 using System;
 using System.Linq;
-
 
 namespace BaddyMatchMaker.Services
 {
@@ -18,10 +19,11 @@ namespace BaddyMatchMaker.Services
             this.matchMakingService = matchMakingService;
         }
 
-        public Round CreateNewRound(int sessionId, int numberOfCourts)
+        public Round CreateNewRound(NextRoundRequestDto nextRoundRequest)
         {
+            var numberOfCourts = nextRoundRequest.AvailableCourts.Count;
             var session = unitOfWork.SessionRepository
-                .Get(s => s.SessionId == sessionId, includeProperties: nameof(Session.Venue))
+                .Get(s => s.SessionId == nextRoundRequest.SessionId, includeProperties: nameof(Session.Venue))
                 .FirstOrDefault();
 
             if (session == null)
@@ -41,12 +43,11 @@ namespace BaddyMatchMaker.Services
                 throw new Exception("Settings not found.");
             }
 
-            var round = unitOfWork.RoundRepository
-                .Get(r => r.RoundId == 1, includeProperties: nameof(Round.Matches))
-                .FirstOrDefault();
+            var nextRound = session.Rounds.Count + 1;
 
-            return round;
-            //return matchMakingService.CreateMatches(settings, numberOfCourts, session);
+            var roundSettings = new RoundSettings(nextRound, settings, nextRoundRequest.AvailableCourts);
+            var matches = matchMakingService.CreateMatches(roundSettings).ToList();
+            return new Round(session, matches, numberOfCourts, nextRound);
         }
 
         public Session CreateSession(SessionDto sessionDto)
@@ -59,6 +60,8 @@ namespace BaddyMatchMaker.Services
             }
 
             session = sessionDto.ToModel();
+            session.StartSession();
+
             unitOfWork.SessionRepository.Insert(session);
             unitOfWork.Commit();
             return session;
@@ -72,6 +75,9 @@ namespace BaddyMatchMaker.Services
             {
                 throw new Exception("Session not found.");
             }
+
+            session.EndSession();
+            unitOfWork.Commit();
         }
 
         public void SignAllPlayersIn(int sessionId)

@@ -1,9 +1,11 @@
-﻿using BaddyMatchMaker.Models;
+﻿using BaddyMatchMaker.Helpers;
+using BaddyMatchMaker.Models;
+using System.Collections.Generic;
 
 namespace BaddyMatchMaker.Services
 {
     public interface IMatchMakingService
     {
-        Round CreateMatches(Setting settings, int numberOfCourts, Session session);
+        IEnumerable<Match> CreateMatches(RoundSettings roundSettings);
     }
 }

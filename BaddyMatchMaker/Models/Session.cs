@@ -31,5 +31,15 @@ namespace BaddyMatchMaker.Models
         public void SignInPlayer(SessionPlayer sessionPlayer) {
             sessionPlayers.Add(sessionPlayer);
         }
+
+        public void StartSession()
+        {
+            Active = true;
+        }
+
+        public void EndSession()
+        {
+            Active = false;
+        }
     }
 }

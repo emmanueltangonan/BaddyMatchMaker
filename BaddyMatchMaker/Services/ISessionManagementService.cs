@@ -1,11 +1,12 @@
 ﻿using BaddyMatchMaker.Dto;
+using BaddyMatchMaker.Dto.RequestDto;
 using BaddyMatchMaker.Models;
 
 namespace BaddyMatchMaker.Services
 {
     public interface ISessionManagementService
     {
-        Round CreateNewRound(int sessionId, int numberOfCourts);
+        Round CreateNewRound(NextRoundRequestDto nextRoundRequest);
         Session CreateSession(SessionDto sessionDto);
         void EndSession(int sessionId);
         void SwapPlayers(int roundId, int player1Id, int player2Id);

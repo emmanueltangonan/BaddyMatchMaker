@@ -16,20 +16,17 @@ namespace BaddyMatchMaker.Services
     /// </summary>
     public class MatchMakingService : IMatchMakingService
     {
-        private readonly IUnitOfWork unitOfWork;
         private readonly IPlayerPoolSelectionStrategyFactory playerPoolSelectionStrategyFactory;
         private readonly IMatchGroupingStrategyFactory matchGroupingStrategyFactory;  
         private readonly IPlayerPrioritizationService playerPrioritizationService;
         private readonly IShuffleService shuffleService;
 
         public MatchMakingService(
-            IUnitOfWork unitOfWork, 
             IPlayerPoolSelectionStrategyFactory playerPoolSelectionStrategyFactory, 
             IMatchGroupingStrategyFactory matchGroupingStrategyFactory,
             IPlayerPrioritizationService playerPrioritizationService,
             IShuffleService shuffleService)
         {
-            this.unitOfWork = unitOfWork;
             this.playerPoolSelectionStrategyFactory = playerPoolSelectionStrategyFactory;
             this.matchGroupingStrategyFactory = matchGroupingStrategyFactory;
             this.playerPrioritizationService = playerPrioritizationService;

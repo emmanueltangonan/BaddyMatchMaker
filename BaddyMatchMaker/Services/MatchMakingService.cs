@@ -1,4 +1,5 @@
-﻿using BaddyMatchMaker.Helpers;
+﻿using BaddyMatchMaker.ExceptionHandling;
+using BaddyMatchMaker.Helpers;
 using BaddyMatchMaker.Models;
 using BaddyMatchMaker.Repository;
 using BaddyMatchMaker.Strategies.Factory;
@@ -46,7 +47,7 @@ namespace BaddyMatchMaker.Services
 
             if (playerPool.Count < roundSettings.PlayersNeededPerMatch)
             {
-                throw new Exception("Not enough players to create a match.");
+                throw new ValidationException("Not enough players to create a match.");
             }
 
             // shuffle the player pool to mix up the players a bit

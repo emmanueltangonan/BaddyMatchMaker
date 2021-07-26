@@ -1,4 +1,5 @@
-﻿using BaddyMatchMaker.Helpers;
+﻿using BaddyMatchMaker.ExceptionHandling;
+using BaddyMatchMaker.Helpers;
 using BaddyMatchMaker.Helpers.Extensions;
 using BaddyMatchMaker.Models;
 using System;
@@ -18,7 +19,7 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
         {
             if (playerPool.Count % PlayersNeededPerMatch != 0)
             {
-                throw new ArgumentException($"Expected player count to be multiple of {PlayersNeededPerMatch}.");
+                throw new ValidationException($"Expected player count to be multiple of {PlayersNeededPerMatch}.");
             }
 
             var availableCourts = new Queue<int>(AvailableCourts);
@@ -27,7 +28,7 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
             var matchesToCreate = playerPool.Count / PlayersNeededPerMatch;
             if (matchesToCreate > availableCourts.Count)
             {
-                throw new Exception("Player count exceeds expected number.");
+                throw new ValidationException("Player count exceeds expected number.");
             }
 
             var matches = new List<Match>();

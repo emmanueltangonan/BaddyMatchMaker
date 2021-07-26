@@ -1,4 +1,5 @@
-﻿using BaddyMatchMaker.Helpers;
+﻿using BaddyMatchMaker.ExceptionHandling;
+using BaddyMatchMaker.Helpers;
 using BaddyMatchMaker.Models;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,11 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
                     return adjustedPlayerPool;
                 }
 
+                if (!reserve.Any())
+                {
+                    throw new ValidationException("Expected reserve to be not empty.");
+                }
+
                 return GetPlayerPoolWithLeastDisruption(adjustedPlayerPool, playerPool.Skip(adjustedPlayerPoolCount).ToList());
             }
 
@@ -61,11 +67,6 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
 
         private IEnumerable<SessionPlayer> GetPlayerPoolWithLeastDisruption(List<SessionPlayer> playerPool, List<SessionPlayer> reserve)
         {
-            if (!reserve.Any())
-            {
-                throw new Exception("Expected reserve to be not empty.");
-            }
-
             var requiredPlayersCount = playerPool.Count;
             var lastPlayer = playerPool.Last();
 

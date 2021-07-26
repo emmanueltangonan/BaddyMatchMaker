@@ -8,11 +8,16 @@ using System.Linq;
 
 namespace BaddyMatchMaker.Services
 {
+    /// <summary>
+    /// Prioritizes available players based on certain criteria,
+    /// Gets the player pool to create matches from, and
+    /// Groups the players into matches according to skill level and other criteria
+    /// </summary>
     public class MatchMakingService : IMatchMakingService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IPlayerPoolSelectionStrategyFactory playerPoolSelectionStrategyFactory;
-        private readonly IMatchGroupingStrategyFactory matchGroupingStrategyFactory;
+        private readonly IMatchGroupingStrategyFactory matchGroupingStrategyFactory;  
         private readonly IPlayerPrioritizationService playerPrioritizationService;
         private readonly IShuffleService shuffleService;
 

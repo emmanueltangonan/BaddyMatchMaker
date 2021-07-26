@@ -47,12 +47,12 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
                 int excess = 0;
                 if (playerPool.Count % PlayersNeededPerMatch != 0)
                 {
-                    // if odd
+                    // if not multiple
                     excess = playerPool.Count % PlayersNeededPerMatch;
                 }
                 else
                 {
-                    // even
+                    // if multiple but not even number of male and female
                     excess = PlayersNeededPerMatch;
                 }
 

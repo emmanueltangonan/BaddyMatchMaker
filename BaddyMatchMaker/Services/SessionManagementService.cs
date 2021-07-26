@@ -43,11 +43,16 @@ namespace BaddyMatchMaker.Services
                 throw new Exception("Settings not found.");
             }
 
-            var nextRound = session.Rounds.Count + 1;
+            var nextRoundNumber = session.Rounds.Count + 1;
 
-            var roundSettings = new RoundSettings(nextRound, settings, nextRoundRequest.AvailableCourts);
+            var roundSettings = new RoundSettings(nextRoundNumber, settings, nextRoundRequest.AvailableCourts);
             var matches = matchMakingService.CreateMatches(roundSettings).ToList();
-            return new Round(session, matches, numberOfCourts, nextRound);
+
+            var newRound = new Round(session, matches, numberOfCourts, nextRoundNumber);
+            unitOfWork.RoundRepository.Insert(newRound);
+            unitOfWork.Commit();
+
+            return newRound;
         }
 
         public Session CreateSession(SessionDto sessionDto)

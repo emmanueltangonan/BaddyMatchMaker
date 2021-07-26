@@ -23,7 +23,7 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
         {
             if (playerPool.Count % PlayersNeededPerMatch != 0)
             {
-                throw new ArgumentException("Expected player count to be multiple of 4.");
+                throw new ArgumentException($"Expected player count to be multiple of {PlayersNeededPerMatch}.");
             }
 
             var availableCourts = new Queue<int>(roundSettings.AvailableCourts);

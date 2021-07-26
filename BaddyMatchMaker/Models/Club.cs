@@ -9,6 +9,7 @@ namespace BaddyMatchMaker.Models
     {
         public Club()
         {
+            Players = new HashSet<Player>();
             Sessions = new HashSet<Session>();
         }
 
@@ -17,7 +18,7 @@ namespace BaddyMatchMaker.Models
         public string Description { get; set; }
 
         public virtual Setting Setting { get; set; }
-
+        public virtual ICollection<Player> Players { get; set; }
         public virtual ICollection<Session> Sessions { get; set; }
     }
 }

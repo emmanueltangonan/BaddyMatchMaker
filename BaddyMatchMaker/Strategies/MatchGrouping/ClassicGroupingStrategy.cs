@@ -1,4 +1,5 @@
-﻿using BaddyMatchMaker.Models;
+﻿using BaddyMatchMaker.Helpers;
+using BaddyMatchMaker.Models;
 using System;
 using System.Collections.Generic;
 using static BaddyMatchMaker.Helpers.Constants;
@@ -11,17 +12,18 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
     /// </summary>
     public class ClassicGroupingStrategy : IMatchGroupingStrategy
     {
-        public ClassicGroupingStrategy()
-        {
+        private readonly RoundSettings roundSettings;
 
+        public ClassicGroupingStrategy(RoundSettings roundSettings)
+        {
+            this.roundSettings = roundSettings;
         }
+
+        private int PlayersNeededPerMatch => roundSettings.PlayersNeededPerMatch;
 
         public IEnumerable<Match> GroupPlayers(ICollection<SessionPlayer> playerPool)
         {
-            if (playerPool.Count % PlayerPerMatch.Doubles != 0)
-            {
-                throw new ArgumentException("Expected player count to be multiple of 4.");
-            }
+            
 
             return null;
         }

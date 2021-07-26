@@ -12,7 +12,7 @@ namespace BaddyMatchMakerTests.Strategies
     public class IndiscriminateGroupingStrategyTests
     {
         [TestMethod]
-        public void IndiscriminateGroupingStrategyTests() {
+        public void GroupPlayers_CreatesNewMatches() {
             var sessionPlayers = new List<SessionPlayer> {
                 new SessionPlayer { PlayerId = 1, Player = new Player { Sex = PlayerSex.Male, Grade = 2 } },
                 new SessionPlayer { PlayerId = 2, Player = new Player { Sex = PlayerSex.Male, Grade = 4 } },

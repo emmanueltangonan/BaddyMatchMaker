@@ -9,6 +9,8 @@ namespace BaddyMatchMaker.Dto
     {
         public int PlayerId { get; set; }
 
+        public int ClubId { get; set; }
+
         public string Name { get; set; }
 
         public string Sex { get; set; }
@@ -30,6 +32,7 @@ namespace BaddyMatchMaker.Dto
             return new PlayerDto()
             {
                 PlayerId = model.PlayerId,
+                ClubId = model.ClubId,
                 Name = model.Name,
                 Sex = model.Sex,
                 Grade = model.Grade,
@@ -45,6 +48,7 @@ namespace BaddyMatchMaker.Dto
             return new Player()
             {
                 PlayerId = PlayerId,
+                ClubId = ClubId,
                 Name = Name,
                 Sex = Sex,
                 Grade = Grade,

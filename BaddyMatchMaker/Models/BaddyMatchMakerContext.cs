@@ -70,6 +70,8 @@ namespace BaddyMatchMaker.Models
 
                 entity.Property(e => e.PlayerId).HasColumnName("playerId");
 
+                entity.Property(e => e.ClubId).HasColumnName("clubId");
+
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
                     .IsUnicode(false)
@@ -94,6 +96,12 @@ namespace BaddyMatchMaker.Models
                     .IsUnicode(false)
                     .HasColumnName("sex")
                     .IsFixedLength(true);
+
+                entity.HasOne(d => d.Club)
+                    .WithMany(p => p.Players)
+                    .HasForeignKey(d => d.ClubId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Player_Club");
             });
 
             modelBuilder.Entity<PlayerMatch>(entity =>

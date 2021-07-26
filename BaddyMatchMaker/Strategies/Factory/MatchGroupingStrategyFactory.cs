@@ -20,7 +20,7 @@ namespace BaddyMatchMaker.Strategies.Factory
                     return new MixedDoublesPrioritizedGroupingStrategy();
                 }
 
-                return new ClassicGroupingStrategy();
+                return new ClassicGroupingStrategy(roundSettings);
             }
         }
     }

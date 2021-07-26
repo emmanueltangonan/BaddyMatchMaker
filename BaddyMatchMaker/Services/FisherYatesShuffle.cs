@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BaddyMatchMaker.Services
 {
-    public class ShuffleService : IShuffleService
+    public class FisherYatesShuffle : IShuffleService
     {
         public void Shuffle<T>(IList<T> list)
         {

@@ -5,7 +5,6 @@ using BaddyMatchMaker.Strategies.Factory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static BaddyMatchMaker.Helpers.Constants;
 
 namespace BaddyMatchMaker.Services
 {
@@ -14,33 +13,33 @@ namespace BaddyMatchMaker.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IPlayerPoolSelectionStrategyFactory playerPoolSelectionStrategyFactory;
         private readonly IMatchGroupingStrategyFactory matchGroupingStrategyFactory;
+        private readonly IPlayerPrioritizationService playerPrioritizationService;
         private readonly IShuffleService shuffleService;
 
         public MatchMakingService(
             IUnitOfWork unitOfWork, 
             IPlayerPoolSelectionStrategyFactory playerPoolSelectionStrategyFactory, 
             IMatchGroupingStrategyFactory matchGroupingStrategyFactory,
+            IPlayerPrioritizationService playerPrioritizationService,
             IShuffleService shuffleService)
         {
             this.unitOfWork = unitOfWork;
             this.playerPoolSelectionStrategyFactory = playerPoolSelectionStrategyFactory;
             this.matchGroupingStrategyFactory = matchGroupingStrategyFactory;
+            this.playerPrioritizationService = playerPrioritizationService;
             this.shuffleService = shuffleService;
         }
 
         public IEnumerable<Match> CreateMatches(RoundSettings roundSettings)
         {
-            // get all players ordered by number of games played and sign in time
-            var availablePlayers = unitOfWork.SessionPlayerRepository
-                .Get(p => p.Active)
-                .OrderBy(p => p.Player.PlayerMatches.Count)
-                .OrderBy(p => p.SignInTime);
+            // get all players ordered by prioritization
+            var availablePlayers = playerPrioritizationService.GetAvailablePlayersForNextRound();
 
-            // pool selection
+            // get player pool to create matches from
             var playerPoolSelectionStrategy = playerPoolSelectionStrategyFactory.Create(roundSettings);
             var playerPool = playerPoolSelectionStrategy.GetPlayerPool(availablePlayers).ToList();
 
-            if (!playerPool.Any())
+            if (playerPool.Count < roundSettings.PlayersNeededPerMatch)
             {
                 throw new Exception("Not enough players to create a match.");
             }
@@ -48,7 +47,7 @@ namespace BaddyMatchMaker.Services
             // shuffle the player pool to mix up the players a bit
             shuffleService.Shuffle<SessionPlayer>(playerPool);
 
-            // court grouping and assignment
+            // create court grouping and assignment
             var matchGroupingStrategy = matchGroupingStrategyFactory.Create(roundSettings);
             return matchGroupingStrategy.GroupPlayers(playerPool);
         }

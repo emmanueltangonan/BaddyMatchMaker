@@ -8,11 +8,11 @@ using static BaddyMatchMaker.Helpers.Constants;
 
 namespace BaddyMatchMaker.Strategies.MatchGrouping
 {
-    public class IndiscriminateGrouping : IMatchGroupingStrategy
+    public class IndiscriminateGroupingStrategy : IMatchGroupingStrategy
     {
         private RoundSettings roundSettings;
 
-        public IndiscriminateGrouping(RoundSettings roundSettings)
+        public IndiscriminateGroupingStrategy(RoundSettings roundSettings)
         {
             this.roundSettings = roundSettings;
         }
@@ -27,7 +27,7 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
             }
 
             var availableCourts = new Queue<int>(roundSettings.AvailableCourts);
-            var playerPoolOrderedBySkillLevel = new Queue<SessionPlayer>(playerPool.OrderByDescending(p => p.Player.Grade));
+            var playerPoolOrderedBySkillLevel = new Queue<SessionPlayer>(playerPool.OrderBy(p => p.Player.Grade));
 
             var matchesToCreate = playerPool.Count / PlayersNeededPerMatch;
             if (matchesToCreate > availableCourts.Count)

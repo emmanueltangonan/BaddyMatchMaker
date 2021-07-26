@@ -11,16 +11,16 @@ namespace BaddyMatchMaker.Strategies.Factory
         {
             if (roundSettings.IgnoreSex)
             {
-                return new IndiscriminateGrouping(roundSettings);
+                return new IndiscriminateGroupingStrategy(roundSettings);
             }
             else
             {
                 if (roundSettings.PrioritizeMixed && !roundSettings.SinglesMode)
                 {
-                    return new MixedDoublesPrioritizedGrouping();
+                    return new MixedDoublesPrioritizedGroupingStrategy();
                 }
 
-                return new ClassicGrouping();
+                return new ClassicGroupingStrategy();
             }
         }
     }

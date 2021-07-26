@@ -35,6 +35,7 @@ namespace BaddyMatchMaker
             services.AddScoped<IMatchGroupingStrategyFactory, MatchGroupingStrategyFactory>();
             services.AddScoped<IPlayerPoolSelectionStrategyFactory, PlayerPoolSelectionStrategyFactory>();
             services.AddScoped<IShuffleService, FisherYatesShuffle>();
+            services.AddScoped<IPlayerPrioritizationService, DefaultPrioritizationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

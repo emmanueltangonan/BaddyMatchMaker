@@ -9,9 +9,9 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
     /// Forms doubles matches: men's, women's and mixed doubles
     /// Prioritizes regular doubles over mixed doubles
     /// </summary>
-    public class ClassicGrouping : IMatchGroupingStrategy
+    public class ClassicGroupingStrategy : IMatchGroupingStrategy
     {
-        public ClassicGrouping()
+        public ClassicGroupingStrategy()
         {
 
         }

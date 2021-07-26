@@ -14,15 +14,18 @@ namespace BaddyMatchMaker.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IPlayerPoolSelectionStrategyFactory playerPoolSelectionStrategyFactory;
         private readonly IMatchGroupingStrategyFactory matchGroupingStrategyFactory;
+        private readonly IShuffleService shuffleService;
 
         public MatchMakingService(
             IUnitOfWork unitOfWork, 
             IPlayerPoolSelectionStrategyFactory playerPoolSelectionStrategyFactory, 
-            IMatchGroupingStrategyFactory matchGroupingStrategyFactory)
+            IMatchGroupingStrategyFactory matchGroupingStrategyFactory,
+            IShuffleService shuffleService)
         {
             this.unitOfWork = unitOfWork;
             this.playerPoolSelectionStrategyFactory = playerPoolSelectionStrategyFactory;
             this.matchGroupingStrategyFactory = matchGroupingStrategyFactory;
+            this.shuffleService = shuffleService;
         }
 
         public IEnumerable<Match> CreateMatches(RoundSettings roundSettings)
@@ -42,9 +45,11 @@ namespace BaddyMatchMaker.Services
                 throw new Exception("Not enough players to create a match.");
             }
 
+            // shuffle the player pool to mix up the players a bit
+            shuffleService.Shuffle<SessionPlayer>(playerPool);
+
             // court grouping and assignment
             var matchGroupingStrategy = matchGroupingStrategyFactory.Create(roundSettings);
-            playerPool.Shuffle<SessionPlayer>();
             return matchGroupingStrategy.GroupPlayers(playerPool);
         }
 

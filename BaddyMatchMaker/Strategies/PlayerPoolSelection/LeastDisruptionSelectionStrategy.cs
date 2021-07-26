@@ -12,7 +12,7 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
     /// Valid match = men's doubles, women's doubles and mixed doubles
     /// If the number of male or female players is odd, one player within the cutoff limit will have to be swapped
     /// with another player outside the cutoff following the 'least disruption' criteria ie. one that causes the least disruption to the queue
-    /// Eg. Consider the list of players MMFFMMMM|MMMF... where | is the cutoff line
+    /// Eg. Consider the list of players MMMFMMMM|MMMF... where | is the cutoff line
     /// Swapping M (8th pos) with F (12th) would give disruption index = 4; whereas changing F (4th) to M (9th), disruption index = 5; 
     /// So swapping M => F would cause less disruption and would be performed by this algorithm
     /// </summary>
@@ -69,8 +69,6 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
         {
             var requiredPlayersCount = playerPool.Count;
             var lastPlayer = playerPool.Last();
-
-            // MMFFMMMM|MMMF
 
             // find the nearest opposite sex player from reserve
             var nearestReserveOppositeSexIndex = reserve.FindIndex(p => p.Player.Sex != lastPlayer.Player.Sex);

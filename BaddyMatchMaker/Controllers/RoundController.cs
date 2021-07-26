@@ -22,7 +22,6 @@ namespace BaddyMatchMaker.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var round = sessionManagementService.CreateNewRound(new NextRoundRequestDto { SessionId = 2, AvailableCourts = new[] { 1, 2, 3, 4, 5, 6 }.ToList() });
             return new OkObjectResult("API Running...");
         }
 

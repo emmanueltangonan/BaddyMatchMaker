@@ -16,7 +16,7 @@ namespace BaddyMatchMaker.Services
         public IOrderedEnumerable<SessionPlayer> GetAvailablePlayersForNextRound()
         {
             var availablePlayers = unitOfWork.SessionPlayerRepository
-                            .Get(p => p.Active)
+                            .Get(p => p.Active, includeProperties: nameof(SessionPlayer.Player))
                             .OrderBy(p => p.Player.PlayerMatches.Count)
                             .OrderBy(p => p.SignInTime);
 

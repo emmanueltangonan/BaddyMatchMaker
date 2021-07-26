@@ -6,6 +6,6 @@ namespace BaddyMatchMaker.Services
 {
     public interface IMatchMakingService
     {
-        IEnumerable<Match> CreateMatches(RoundSettings roundSettings);
+        List<Match> CreateMatches(RoundSettings roundSettings);
     }
 }

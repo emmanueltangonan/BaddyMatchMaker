@@ -10,20 +10,20 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
     /// Forms doubles matches: men's, women's and mixed doubles
     /// Prioritizes regular doubles over mixed doubles
     /// </summary>
-    public class ClassicGroupingStrategy : IMatchGroupingStrategy
+    public class ClassicGroupingStrategy : MatchGroupingStrategyBase, IMatchGroupingStrategy
     {
-        private readonly RoundSettings roundSettings;
-
-        public ClassicGroupingStrategy(RoundSettings roundSettings)
+        public ClassicGroupingStrategy(RoundSettings roundSettings) : base(roundSettings)
         {
-            this.roundSettings = roundSettings;
         }
 
-        private int PlayersNeededPerMatch => roundSettings.PlayersNeededPerMatch;
-
-        public IEnumerable<Match> GroupPlayers(ICollection<SessionPlayer> playerPool)
+        public List<Match> GroupPlayers(ICollection<SessionPlayer> playerPool)
         {
-            
+            if (playerPool.Count % PlayersNeededPerMatch != 0)
+            {
+                throw new ArgumentException($"Expected player count to be multiple of {PlayersNeededPerMatch}.");
+            }
+
+
 
             return null;
         }

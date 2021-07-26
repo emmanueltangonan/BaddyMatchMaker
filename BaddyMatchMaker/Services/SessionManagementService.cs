@@ -1,5 +1,6 @@
 ﻿using BaddyMatchMaker.Dto;
 using BaddyMatchMaker.Dto.RequestDto;
+using BaddyMatchMaker.ExceptionHandling;
 using BaddyMatchMaker.Helpers;
 using BaddyMatchMaker.Models;
 using BaddyMatchMaker.Repository;
@@ -28,19 +29,19 @@ namespace BaddyMatchMaker.Services
 
             if (session == null)
             {
-                throw new Exception("Session not found.");
+                throw new NotFoundException(nameof(Session), nextRoundRequest.SessionId);
             }
-
+              
             if (session.Venue.NumberOfCourts < numberOfCourts)
             {
-                throw new Exception("Requested number of courts exceeds venue's available courts.");
+                throw new ValidationException("Requested number of courts exceeds venue's available courts.");
             }
 
             var settings = unitOfWork.SettingsRepository.GetById(session.ClubId);
 
             if (settings == null)
             {
-                throw new Exception("Settings not found.");
+                throw new NotFoundException(nameof(Setting), session.ClubId);
             }
 
             var nextRoundNumber = session.Rounds.Count + 1;
@@ -61,7 +62,7 @@ namespace BaddyMatchMaker.Services
 
             if (session != null)
             {
-                throw new Exception("Session with same ID already exists.");
+                throw new DuplicateKeyException(nameof(Session), sessionDto.SessionId);
             }
 
             session = sessionDto.ToModel();
@@ -78,7 +79,7 @@ namespace BaddyMatchMaker.Services
 
             if (session == null)
             {
-                throw new Exception("Session not found.");
+                throw new NotFoundException(nameof(Session), sessionId);
             }
 
             session.EndSession();
@@ -92,7 +93,7 @@ namespace BaddyMatchMaker.Services
 
             if (session == null)
             {
-                throw new Exception("Session not found.");
+                throw new NotFoundException(nameof(Session), sessionId);
             }
 
             var signUpTimeDelay = 0;
@@ -114,7 +115,7 @@ namespace BaddyMatchMaker.Services
 
             if (sessionPlayer != null)
             {
-                throw new Exception("Player already signed in.");
+                throw new ValidationException("Player already signed in.");
             }
 
             sessionPlayer = new SessionPlayer(sessionId, playerId);
@@ -124,12 +125,12 @@ namespace BaddyMatchMaker.Services
 
             if (session == null)
             {
-                throw new Exception("Session not found.");
+                throw new NotFoundException(nameof(Session), sessionId);
             }
 
             if (!session.Active)
             {
-                throw new Exception("Session is inactive.");
+                throw new ValidationException("Session is inactive.");
             }
 
             session.SignInPlayer(sessionPlayer);
@@ -145,7 +146,7 @@ namespace BaddyMatchMaker.Services
 
             if (sessionPlayer == null)
             {
-                throw new Exception("Player not signed in.");
+                throw new ValidationException("Player not signed in.");
             }
 
             sessionPlayer.SignOut();
@@ -158,7 +159,7 @@ namespace BaddyMatchMaker.Services
 
             if (round == null)
             {
-                throw new Exception("Round not found.");
+                throw new NotFoundException(nameof(round), roundId);
             }
 
             round.SwapPlayers(player1Id, player2Id);

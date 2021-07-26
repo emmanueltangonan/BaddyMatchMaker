@@ -5,18 +5,11 @@ using System.Linq;
 
 namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
 {
-    public class IndiscriminateSelectionStrategy : IPlayerPoolSelectionStrategy
-    {
-        private readonly RoundSettings roundSettings;
-
-        public IndiscriminateSelectionStrategy(RoundSettings roundSettings)
+    public class IndiscriminateSelectionStrategy : PlayerPoolSelectionStrategyBase, IPlayerPoolSelectionStrategy
+    { 
+        public IndiscriminateSelectionStrategy(RoundSettings roundSettings) : base(roundSettings)
         {
-            this.roundSettings = roundSettings;
         }
-
-        private int PlayersNeededPerMatch => roundSettings.PlayersNeededPerMatch;
-
-        private int RequiredPlayersCount => roundSettings.RequiredPlayersCount;
 
         public IEnumerable<SessionPlayer> GetPlayerPool(IOrderedEnumerable<SessionPlayer> availablePlayers)
         {

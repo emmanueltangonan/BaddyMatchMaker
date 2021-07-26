@@ -11,7 +11,7 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
     /// </summary>
     public class MixedDoublesPrioritizedGroupingStrategy : IMatchGroupingStrategy
     {
-        public IEnumerable<Match> GroupPlayers(ICollection<SessionPlayer> playerPool)
+        public List<Match> GroupPlayers(ICollection<SessionPlayer> playerPool)
         {
             throw new NotImplementedException();
         }

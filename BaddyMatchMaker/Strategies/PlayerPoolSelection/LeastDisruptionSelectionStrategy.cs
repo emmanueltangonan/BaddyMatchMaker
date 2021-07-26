@@ -3,7 +3,6 @@ using BaddyMatchMaker.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static BaddyMatchMaker.Helpers.Constants;
 
 namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
 {
@@ -16,21 +15,11 @@ namespace BaddyMatchMaker.Strategies.PlayerPoolSelection
     /// Swapping M (8th pos) with F (12th) would give disruption index = 4; whereas changing F (4th) to M (9th), disruption index = 5; 
     /// So swapping M => F would cause less disruption and would be performed by this algorithm
     /// </summary>
-    public class LeastDisruptionSelectionStrategy : IPlayerPoolSelectionStrategy
+    public class LeastDisruptionSelectionStrategy : PlayerPoolSelectionStrategyBase, IPlayerPoolSelectionStrategy
     {
-        private readonly RoundSettings roundSettings;
-
-        public LeastDisruptionSelectionStrategy(RoundSettings roundSettings)
+        public LeastDisruptionSelectionStrategy(RoundSettings roundSettings) : base(roundSettings)
         {
-            this.roundSettings = roundSettings;
         }
-        private int RequiredPlayersCount => roundSettings.RequiredPlayersCount;
-
-        private int PlayersNeededPerMatch => roundSettings.PlayersNeededPerMatch;
-
-        private bool HasEvenMaleAndFemaleCount(IEnumerable<SessionPlayer> playerPool) => playerPool.Count(p => p.Player.Sex == PlayerSex.Male) % 2 == 0;
-
-        private bool IsMultiple(int count) => count % roundSettings.PlayersNeededPerMatch == 0;
 
         public IEnumerable<SessionPlayer> GetPlayerPool(IOrderedEnumerable<SessionPlayer> availablePlayers)
         {

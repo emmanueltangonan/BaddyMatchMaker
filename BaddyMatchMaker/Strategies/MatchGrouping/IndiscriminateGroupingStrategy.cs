@@ -8,25 +8,20 @@ using static BaddyMatchMaker.Helpers.Constants;
 
 namespace BaddyMatchMaker.Strategies.MatchGrouping
 {
-    public class IndiscriminateGroupingStrategy : IMatchGroupingStrategy
+    public class IndiscriminateGroupingStrategy : MatchGroupingStrategyBase, IMatchGroupingStrategy
     {
-        private RoundSettings roundSettings;
-
-        public IndiscriminateGroupingStrategy(RoundSettings roundSettings)
+        public IndiscriminateGroupingStrategy(RoundSettings roundSettings) : base(roundSettings)
         {
-            this.roundSettings = roundSettings;
         }
 
-        private int PlayersNeededPerMatch => roundSettings.PlayersNeededPerMatch;
-
-        public IEnumerable<Match> GroupPlayers(ICollection<SessionPlayer> playerPool)
+        public List<Match> GroupPlayers(ICollection<SessionPlayer> playerPool)
         {
             if (playerPool.Count % PlayersNeededPerMatch != 0)
             {
                 throw new ArgumentException($"Expected player count to be multiple of {PlayersNeededPerMatch}.");
             }
 
-            var availableCourts = new Queue<int>(roundSettings.AvailableCourts);
+            var availableCourts = new Queue<int>(AvailableCourts);
             var playerPoolOrderedBySkillLevel = new Queue<SessionPlayer>(playerPool.OrderBy(p => p.Player.Grade));
 
             var matchesToCreate = playerPool.Count / PlayersNeededPerMatch;
@@ -35,6 +30,7 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
                 throw new Exception("Player count exceeds expected number.");
             }
 
+            var matches = new List<Match>();
             for (var i = 0; i < matchesToCreate; i++)
             {
                 var match = new Match {
@@ -45,8 +41,10 @@ namespace BaddyMatchMaker.Strategies.MatchGrouping
                         .ToList()
                 };
 
-                yield return match;
+                matches.Add(match);
             }
+
+            return matches;
         }
     }
 }

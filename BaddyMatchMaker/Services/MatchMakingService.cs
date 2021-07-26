@@ -35,7 +35,7 @@ namespace BaddyMatchMaker.Services
             this.shuffleService = shuffleService;
         }
 
-        public IEnumerable<Match> CreateMatches(RoundSettings roundSettings)
+        public List<Match> CreateMatches(RoundSettings roundSettings)
         {
             // get all players ordered by prioritization
             var availablePlayers = playerPrioritizationService.GetAvailablePlayersForNextRound();

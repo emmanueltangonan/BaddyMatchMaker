@@ -15,7 +15,7 @@ namespace BaddyMatchMaker.Strategies.Factory
             }
             else
             {
-                return new LeastDisruptionSelectionStrategy(roundSettings);
+                return new SwapLastPlayerSelectionStrategy(roundSettings);
             }
         }
     }

@@ -9,6 +9,9 @@ using static BaddyMatchMaker.Helpers.Constants;
 
 namespace BaddyMatchMaker.Strategies.MatchGrouping
 {
+    /// <summary>
+    /// Groups players according to skill level regardless of sex
+    /// </summary>
     public class IndiscriminateGroupingStrategy : MatchGroupingStrategyBase, IMatchGroupingStrategy
     {
         public IndiscriminateGroupingStrategy(RoundSettings roundSettings) : base(roundSettings)
